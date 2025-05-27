@@ -16,6 +16,7 @@ import {
 } from './db';
 
 export interface ChatHistoryItem {
+  [x: string]: IChatMetadata | undefined;
   id: string;
   urlId?: string;
   description?: string;
