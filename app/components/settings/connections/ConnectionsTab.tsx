@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 import { logStore } from '~/lib/stores/logs';
+import { NetlifyConnection } from './NetlifyConnection';
+import { motion } from 'framer-motion';
 
 interface GitHubUserResponse {
   login: string;
@@ -91,8 +93,13 @@ export default function ConnectionsTab() {
   };
 
   return (
-    <div className="p-4 mb-4 border border-bolt-elements-borderColor rounded-lg bg-bolt-elements-background-depth-3">
-      <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">GitHub Connection</h3>
+    <div className="space-y-6">
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="p-4 border border-bolt-elements-borderColor rounded-lg bg-bolt-elements-background-depth-3"
+      >
+        <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">GitHub Connection</h3>
       <div className="flex mb-4">
         <div className="flex-1 mr-2">
           <label className="block text-sm text-bolt-elements-textSecondary mb-1">GitHub Username:</label>
@@ -146,6 +153,17 @@ export default function ConnectionsTab() {
           </span>
         )}
       </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="p-4 border border-bolt-elements-borderColor rounded-lg bg-bolt-elements-background-depth-3"
+      >
+        <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Netlify Connection</h3>
+        <NetlifyConnection />
+      </motion.div>
     </div>
   );
 }
