@@ -166,11 +166,11 @@ export const Menu = () => {
             />
           </div>
         </div>
-        <div className="text-bolt-elements-textPrimary font-medium pl-6 pr-5 my-2">Your Chats</div>
+        <div className="text-bolt-elements-textPrimary font-medium pl-6 pr-5 my-2">Projects</div>
         <div className="flex-1 overflow-auto pl-4 pr-5 pb-5">
           {filteredList.length === 0 && (
             <div className="pl-2 text-bolt-elements-textTertiary">
-              {list.length === 0 ? 'No previous previous' : 'No matches found'}
+              {list.length === 0 ? 'No previous projects' : 'No matches found'}
             </div>
           )}
           <DialogRoot open={dialogContent !== null}>
@@ -193,7 +193,7 @@ export const Menu = () => {
             <Dialog onBackdrop={closeDialog} onClose={closeDialog}>
               {dialogContent?.type === 'delete' && (
                 <>
-                  <DialogTitle>Delete Chat?</DialogTitle>
+                  <DialogTitle>Delete Project?</DialogTitle>
                   <DialogDescription asChild>
                     <div>
                       <p>
