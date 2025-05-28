@@ -4,10 +4,11 @@ import useViewport from '~/lib/hooks';
 import { chatStore } from '~/lib/stores/chat';
 import { netlifyConnection } from '~/lib/stores/netlify';
 import { workbenchStore } from '~/lib/stores/workbench';
+import Cookies from 'js-cookie';
 import { webcontainer } from '~/lib/webcontainer';
 import { classNames } from '~/utils/classNames';
 import { path } from '~/utils/path';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ActionCallbackData } from '~/lib/runtime/message-parser';
 import { chatId } from '~/lib/persistence/useChatHistory'; // Add this import
 import { streamingState } from '~/lib/stores/streaming';
@@ -26,8 +27,67 @@ export function HeaderActionButtons({}: HeaderActionButtonsProps) {
   const isSmallViewport = useViewport(1024);
   const canHideChat = showWorkbench || !showChat;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isActionsOpen, setIsActionsOpen] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const actionsRef = useRef<HTMLDivElement>(null);
   const isStreaming = useStore(streamingState);
+
+  // Handle click outside for actions dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (actionsRef.current && !actionsRef.current.contains(event.target as Node)) {
+        setIsActionsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSyncFiles = useCallback(async () => {
+    setIsSyncing(true);
+    try {
+      const directoryHandle = await window.showDirectoryPicker();
+      await workbenchStore.syncFiles(directoryHandle);
+      toast.success('Files synced successfully');
+    } catch (error) {
+      console.error('Error syncing files:', error);
+      if ((error as Error).name !== 'AbortError') {
+        toast.error('Failed to sync files');
+      }
+    } finally {
+      setIsSyncing(false);
+    }
+  }, []);
+
+  const handlePushToGitHub = useCallback(() => {
+    const repoName = prompt(
+      'Please enter a name for your new GitHub repository:',
+      'bolt-generated-project',
+    );
+
+    if (!repoName) {
+      alert('Repository name is required. Push to GitHub cancelled.');
+      return;
+    }
+
+    const githubUsername = Cookies.get('githubUsername');
+    const githubToken = Cookies.get('githubToken');
+
+    if (!githubUsername || !githubToken) {
+      const usernameInput = prompt('Please enter your GitHub username:');
+      const tokenInput = prompt('Please enter your GitHub personal access token:');
+
+      if (!usernameInput || !tokenInput) {
+        alert('GitHub username and token are required. Push to GitHub cancelled.');
+        return;
+      }
+
+      workbenchStore.pushToGitHub(repoName, usernameInput, tokenInput);
+    } else {
+      workbenchStore.pushToGitHub(repoName, githubUsername, githubToken);
+    }
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -205,6 +265,59 @@ export function HeaderActionButtons({}: HeaderActionButtonsProps) {
 
   return (
     <div className="flex">
+      {/* Actions Dropdown */}
+      <div className="relative mr-2" ref={actionsRef}>
+        <div className="flex border border-bolt-elements-borderColor rounded-md overflow-hidden text-sm">
+          <Button
+            active
+            onClick={() => setIsActionsOpen(!isActionsOpen)}
+            className="px-4 hover:bg-bolt-elements-item-backgroundActive flex items-center gap-2"
+          >
+            Actions
+            <div
+              className={classNames('i-ph:caret-down w-4 h-4 transition-transform', isActionsOpen ? 'rotate-180' : '')}
+            />
+          </Button>
+        </div>
+
+        {isActionsOpen && (
+          <div className="absolute right-0 flex flex-col gap-1 z-50 p-1 mt-1 min-w-[13.5rem] bg-bolt-elements-background-depth-2 rounded-md shadow-lg bg-bolt-elements-backgroundDefault border border-bolt-elements-borderColor">
+            <Button
+              onClick={() => {
+                workbenchStore.downloadZip();
+                setIsActionsOpen(false);
+              }}
+              className="flex items-center w-full px-4 py-2 text-sm text-bolt-elements-textPrimary hover:bg-bolt-elements-item-backgroundActive gap-2 rounded-md"
+            >
+              <div className="i-ph:code" />
+              <span className="flex-1 text-left">Download Code</span>
+            </Button>
+            <Button
+              onClick={async () => {
+                await handleSyncFiles();
+                setIsActionsOpen(false);
+              }}
+              disabled={isSyncing}
+              className="flex items-center w-full px-4 py-2 text-sm text-bolt-elements-textPrimary hover:bg-bolt-elements-item-backgroundActive gap-2 rounded-md"
+            >
+              {isSyncing ? <div className="i-ph:spinner" /> : <div className="i-ph:cloud-arrow-down" />}
+              <span className="flex-1 text-left">{isSyncing ? 'Syncing...' : 'Sync Files'}</span>
+            </Button>
+            <Button
+              onClick={() => {
+                handlePushToGitHub();
+                setIsActionsOpen(false);
+              }}
+              className="flex items-center w-full px-4 py-2 text-sm text-bolt-elements-textPrimary hover:bg-bolt-elements-item-backgroundActive gap-2 rounded-md"
+            >
+              <div className="i-ph:github-logo" />
+              <span className="flex-1 text-left">Push to GitHub</span>
+            </Button>
+          </div>
+        )}
+      </div>
+
+      {/* Publish Dropdown */}
       <div className="relative" ref={dropdownRef}>
         <div className="flex border border-bolt-elements-borderColor rounded-md overflow-hidden mr-2 text-sm">
           <Button
@@ -243,6 +356,32 @@ export function HeaderActionButtons({}: HeaderActionButtonsProps) {
             </Button>
           </div>
         )}
+      </div>
+      <div className="flex border border-bolt-elements-borderColor rounded-md overflow-hidden">
+        <Button
+          active={showChat}
+          disabled={!canHideChat || isSmallViewport} // expand button is disabled on mobile as it's not needed
+          onClick={() => {
+            if (canHideChat) {
+              chatStore.setKey('showChat', !showChat);
+            }
+          }}
+        >
+          <div className="i-bolt:chat text-sm" />
+        </Button>
+        <div className="w-[1px] bg-bolt-elements-borderColor" />
+        <Button
+          active={showWorkbench}
+          onClick={() => {
+            if (showWorkbench && !showChat) {
+              chatStore.setKey('showChat', true);
+            }
+
+            workbenchStore.showWorkbench.set(!showWorkbench);
+          }}
+        >
+          <div className="i-ph:code-bold" />
+        </Button>
       </div>
     </div>
   );
