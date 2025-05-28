@@ -244,32 +244,6 @@ export function HeaderActionButtons({}: HeaderActionButtonsProps) {
           </div>
         )}
       </div>
-      <div className="flex border border-bolt-elements-borderColor rounded-md overflow-hidden">
-        <Button
-          active={showChat}
-          disabled={!canHideChat || isSmallViewport} // expand button is disabled on mobile as it's not needed
-          onClick={() => {
-            if (canHideChat) {
-              chatStore.setKey('showChat', !showChat);
-            }
-          }}
-        >
-          <div className="i-bolt:chat text-sm" />
-        </Button>
-        <div className="w-[1px] bg-bolt-elements-borderColor" />
-        <Button
-          active={showWorkbench}
-          onClick={() => {
-            if (showWorkbench && !showChat) {
-              chatStore.setKey('showChat', true);
-            }
-
-            workbenchStore.showWorkbench.set(!showWorkbench);
-          }}
-        >
-          <div className="i-ph:code-bold" />
-        </Button>
-      </div>
     </div>
   );
 }

@@ -29,11 +29,11 @@ const viewTransition = { ease: cubicEasingFn };
 const sliderOptions: SliderOptions<WorkbenchViewType> = {
   left: {
     value: 'code',
-    text: 'Code Editor',
+    text: 'Code',
   },
   right: {
     value: 'preview',
-    text: 'App Demo',
+    text: 'Preview',
   },
 };
 
@@ -204,14 +204,6 @@ export const Workbench = memo(({ chatStarted, isStreaming }: WorkspaceProps) => 
                     </PanelHeaderButton>
                   </div>
                 )}
-                <IconButton
-                  icon="i-ph:x-circle"
-                  className="-mr-1"
-                  size="xl"
-                  onClick={() => {
-                    workbenchStore.showWorkbench.set(false);
-                  }}
-                />
               </div>
               <div className="relative flex-1 overflow-hidden">
                 <View
