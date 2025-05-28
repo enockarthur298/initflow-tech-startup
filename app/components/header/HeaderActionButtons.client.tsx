@@ -213,7 +213,7 @@ export function HeaderActionButtons({}: HeaderActionButtonsProps) {
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="px-4 hover:bg-bolt-elements-item-backgroundActive flex items-center gap-2"
           >
-            {isDeploying ? 'Deploying...' : 'Deploy'}
+            {isDeploying ? 'Publishing your site...' : 'Publish'}
             <div
               className={classNames('i-ph:caret-down w-4 h-4 transition-transform', isDropdownOpen ? 'rotate-180' : '')}
             />

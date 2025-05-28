@@ -154,7 +154,7 @@ export const Menu = () => {
             className="flex gap-2 items-center bg-bolt-elements-sidebar-buttonBackgroundDefault text-bolt-elements-sidebar-buttonText hover:bg-bolt-elements-sidebar-buttonBackgroundHover rounded-md p-2 transition-theme mb-4"
           >
             <span className="inline-block i-bolt:chat scale-110" />
-            Start new chat
+            Create new project
           </a>
           <div className="relative w-full">
             <input
@@ -162,7 +162,7 @@ export const Menu = () => {
               type="search"
               placeholder="Search"
               onChange={handleSearchChange}
-              aria-label="Search chats"
+              aria-label="Search projects"
             />
           </div>
         </div>
@@ -170,7 +170,7 @@ export const Menu = () => {
         <div className="flex-1 overflow-auto pl-4 pr-5 pb-5">
           {filteredList.length === 0 && (
             <div className="pl-2 text-bolt-elements-textTertiary">
-              {list.length === 0 ? 'No previous conversations' : 'No matches found'}
+              {list.length === 0 ? 'No previous previous' : 'No matches found'}
             </div>
           )}
           <DialogRoot open={dialogContent !== null}>
@@ -199,7 +199,7 @@ export const Menu = () => {
                       <p>
                         You are about to delete <strong>{dialogContent.item.description}</strong>.
                       </p>
-                      <p className="mt-1">Are you sure you want to delete this chat?</p>
+                      <p className="mt-1">Are you sure you want to delete this project?</p>
                     </div>
                   </DialogDescription>
                   <div className="px-5 pb-4 bg-bolt-elements-background-depth-2 flex gap-2 justify-end">
