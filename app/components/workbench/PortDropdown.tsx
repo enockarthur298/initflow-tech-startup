@@ -23,11 +23,9 @@ export const PortDropdown = memo(
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     // sort previews, preserving original index
-    const sortedPreviews = Array.isArray(previews)
-      ? previews
-          .map((previewInfo, index) => ({ ...previewInfo, index }))
-          .sort((a, b) => (a.port || 0) - (b.port || 0))
-      : [];
+    const sortedPreviews = previews
+      .map((previewInfo, index) => ({ ...previewInfo, index }))
+      .sort((a, b) => a.port - b.port);
 
     // close dropdown if user clicks outside
     useEffect(() => {
