@@ -34,6 +34,7 @@ export const Preview = memo(() => {
   const previews = useStore(workbenchStore.previews);
   const activePreview = previews[activePreviewIndex];
 
+  const [url, setUrl] = useState('');
   const [iframeUrl, setIframeUrl] = useState<string | undefined>();
   const [isSelectionMode, setIsSelectionMode] = useState(false);
 
@@ -259,7 +260,27 @@ export const Preview = memo(() => {
           />
         </div>
 
-        <div className="flex-grow"></div>
+        <div className="flex-grow flex items-center gap-1 bg-bolt-elements-preview-addressBar-background border border-bolt-elements-borderColor text-bolt-elements-preview-addressBar-text rounded-full px-3 py-1 text-sm hover:bg-bolt-elements-preview-addressBar-backgroundHover hover:focus-within:bg-bolt-elements-preview-addressBar-backgroundActive focus-within:bg-bolt-elements-preview-addressBar-backgroundActive focus-within-border-bolt-elements-borderColorActive focus-within:text-bolt-elements-preview-addressBar-textActive">
+          <input
+            title="URL"
+            ref={inputRef}
+            className="w-full bg-transparent outline-none"
+            type="text"
+            value={url}
+            onChange={(event) => {
+              setUrl(event.target.value);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' && validateUrl(url)) {
+                setIframeUrl(url);
+
+                if (inputRef.current) {
+                  inputRef.current.blur();
+                }
+              }
+            }}
+          />
+        </div>
 
         <div className="flex items-center gap-2">
           {previews.length > 1 && (
