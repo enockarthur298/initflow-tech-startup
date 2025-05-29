@@ -5,7 +5,6 @@ import { classNames } from '~/utils/classNames';
 import { DialogTitle, dialogVariants, dialogBackdropVariants } from '~/components/ui/Dialog';
 import { IconButton } from '~/components/ui/IconButton';
 import styles from './Settings.module.scss';
-import ProvidersTab from './providers/ProvidersTab';
 import { useSettings } from '~/lib/hooks/useSettings';
 import FeaturesTab from './features/FeaturesTab';
 import DebugTab from './debug/DebugTab';
@@ -18,7 +17,7 @@ interface SettingsProps {
   onClose: () => void;
 }
 
-type TabType = 'data' | 'providers' | 'features' | 'debug' | 'event-logs' | 'connection';
+type TabType = 'data' | 'features' | 'debug' | 'event-logs' | 'connection';
 
 export const SettingsWindow = ({ open, onClose }: SettingsProps) => {
   const { debug, eventLogs } = useSettings();
@@ -26,8 +25,7 @@ export const SettingsWindow = ({ open, onClose }: SettingsProps) => {
 
   const tabs: { id: TabType; label: string; icon: string; component?: ReactElement }[] = [
     { id: 'data', label: 'Data', icon: 'i-ph:database', component: <DataTab /> },
-    { id: 'providers', label: 'Providers', icon: 'i-ph:key', component: <ProvidersTab /> },
-    { id: 'connection', label: 'Connection', icon: 'i-ph:link', component: <ConnectionsTab /> },
+{ id: 'connection', label: 'Connection', icon: 'i-ph:link', component: <ConnectionsTab /> },
     { id: 'features', label: 'Features', icon: 'i-ph:star', component: <FeaturesTab /> },
     ...(debug
       ? [
@@ -91,26 +89,7 @@ export const SettingsWindow = ({ open, onClose }: SettingsProps) => {
                     {tab.label}
                   </button>
                 ))}
-                <div className="mt-auto flex flex-col gap-2">
-                  <a
-                    href="https://github.com/stackblitz-labs/bolt.diy"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={classNames(styles['settings-button'], 'flex items-center gap-2')}
-                  >
-                    <div className="i-ph:github-logo" />
-                    GitHub
-                  </a>
-                  <a
-                    href="https://stackblitz-labs.github.io/bolt.diy/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={classNames(styles['settings-button'], 'flex items-center gap-2')}
-                  >
-                    <div className="i-ph:book" />
-                    Docs
-                  </a>
-                </div>
+                <div className="mt-auto"></div>
               </div>
 
               <div className="flex-1 flex flex-col p-8 pt-10 bg-bolt-elements-background-depth-2">
