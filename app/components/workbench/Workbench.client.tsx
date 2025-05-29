@@ -28,11 +28,11 @@ const viewTransition = { ease: cubicEasingFn };
 const sliderOptions: SliderOptions<WorkbenchViewType> = {
   left: {
     value: 'code',
-    text: 'Code Editor',
+    text: 'Code',
   },
   right: {
     value: 'preview',
-    text: 'App Demo',
+    text: 'Preview',
   },
 };
 
