@@ -26,14 +26,23 @@ export default defineConfig((config) => {
     define: {
       __COMMIT_HASH: JSON.stringify(getGitHash()),
       __APP_VERSION: JSON.stringify(process.env.npm_package_version),
-      'process.env': JSON.stringify(process.env),
+      'process.env': JSON.stringify({
+        ...process.env,
+        // Only include environment variables that are safe for the client
+        PYTHON_BACKEND_URL: process.env.PYTHON_BACKEND_URL,
+      }),
       global: 'globalThis',
     },
     build: {
       target: 'esnext',
     },
+    ssr: {
+      // Mark @clerk/remix as external to prevent it from being bundled
+      noExternal: ['@remix-run/node'],
+    },
     plugins: [
-      nodePolyfills({
+      // Only apply node polyfills in development
+      config.mode === 'development' && nodePolyfills({
         include: ['path', 'buffer', 'process', 'crypto', 'stream', 'util'],
         globals: {
           Buffer: true,

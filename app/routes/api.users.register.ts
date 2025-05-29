@@ -1,5 +1,12 @@
+// This file should only run on the server
 import { json, type ActionFunctionArgs } from '@remix-run/node';
 import { getAuth } from '@clerk/remix/ssr.server';
+import { SERVER_ENV } from '~/utils/serverEnv.server';
+
+// This ensures this file is only used on the server
+if (typeof window !== 'undefined') {
+  throw new Error('This file should only be used on the server');
+}
 
 export const action = async ({ request, params, context }: ActionFunctionArgs) => {
   try {
@@ -17,8 +24,8 @@ export const action = async ({ request, params, context }: ActionFunctionArgs) =
       return json({ error: "User ID is required" }, { status: 400 });
     }
     
-    // Forward the request to your Python backend
-    const pythonBackendUrl = process.env.PYTHON_BACKEND_URL || 'http://localhost:5000';
+    // Use server environment variables
+    const pythonBackendUrl = SERVER_ENV.PYTHON_BACKEND_URL;
     
     try {
       const response = await fetch(`${pythonBackendUrl}/api/users/register`, {
