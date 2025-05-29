@@ -1,12 +1,5 @@
-// This file should only run on the server
 import { json, type LoaderFunctionArgs } from '@remix-run/node';
 import { getAuth } from '@clerk/remix/ssr.server';
-import { SERVER_ENV } from '~/utils/serverEnv.server';
-
-// This ensures this file is only used on the server
-if (typeof window !== 'undefined') {
-  throw new Error('This file should only be used on the server');
-}
 
 export const loader = async ({ request, params, context }: LoaderFunctionArgs) => {
   try {
