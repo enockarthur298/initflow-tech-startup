@@ -2,9 +2,9 @@ import React from 'react';
 
 const EXAMPLE_PROMPTS = [
   { 
-    title: 'Mobile App',
-    text: 'Build a fitness tracker with React Native',
-    description: 'Create a cross-platform mobile app to track workouts, set goals, and visualize progress with charts.',
+    title: 'Web App',
+    text: 'Build a fitness tracking dashboard with React',
+    description: 'Create a responsive web dashboard to track workouts, set goals, and visualize progress with interactive charts.',
     icon: '📱'
   },
   { 
@@ -14,9 +14,9 @@ const EXAMPLE_PROMPTS = [
     icon: '🖥️'
   },
   { 
-    title: 'Mobile App',
-    text: 'Design a food delivery app UI',
-    description: 'Create a beautiful mobile UI for a food delivery service with menu, cart, and order tracking features.',
+    title: 'Web App',
+    text: 'Design a restaurant website with online ordering',
+    description: 'Create a responsive restaurant website with menu display, online ordering system, and reservation features.',
     icon: '🍔'
   },
   { 
