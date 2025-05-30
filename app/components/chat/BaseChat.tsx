@@ -103,7 +103,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     const TEXTAREA_MAX_HEIGHT = chatStarted ? 400 : 200;
     const [apiKeys, setApiKeys] = useState<Record<string, string>>(getApiKeysFromCookies());
     const [modelList, setModelList] = useState<ModelInfo[]>([]);
-    const [isModelSettingsCollapsed, setIsModelSettingsCollapsed] = useState(false);
+    const [isModelSettingsCollapsed, setIsModelSettingsCollapsed] = useState(true); // Keep settings collapsed by default
     const [isListening, setIsListening] = useState(false);
     const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
     const [transcript, setTranscript] = useState('');
@@ -163,6 +163,23 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
           .then((data) => {
             const typedData = data as { modelList: ModelInfo[] };
             setModelList(typedData.modelList);
+            
+            // Set Gemini 2.0 as default model if available
+            const geminiModel = typedData.modelList.find(
+              (model) => model.name === 'gemini-2.0-pro-latest' || model.name.includes('gemini')
+            );
+            
+            if (geminiModel && setModel) {
+              setModel(geminiModel.name);
+              
+              // Also set the provider if available
+              if (providerList && setProvider) {
+                const geminiProvider = providerList.find(p => p.name.toLowerCase() === 'gemini' || p.name.toLowerCase() === 'google');
+                if (geminiProvider) {
+                  setProvider(geminiProvider);
+                }
+              }
+            }
           })
           .catch((error) => {
             console.error('Error fetching model list:', error);
@@ -171,7 +188,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
             setIsModelLoading(undefined);
           });
       }
-    }, [providerList, provider]);
+    }, [providerList, provider, setModel, setProvider]);
 
     const onApiKeysChange = async (providerName: string, apiKey: string) => {
       const newApiKeys = { ...apiKeys, [providerName]: apiKey };
@@ -376,26 +393,29 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     <ClientOnly>
                       {() => (
                         <div className={isModelSettingsCollapsed ? 'hidden' : ''}>
-                          <ModelSelector
-                            key={provider?.name + ':' + modelList.length}
-                            model={model}
-                            setModel={setModel}
-                            modelList={modelList}
-                            provider={provider}
-                            setProvider={setProvider}
-                            providerList={providerList || (PROVIDER_LIST as ProviderInfo[])}
-                            apiKeys={apiKeys}
-                            modelLoading={isModelLoading}
-                          />
-                          {(providerList || []).length > 0 && provider && (
-                            <APIKeyManager
+                          {/* Model selector removed from UI but functionality preserved */}
+                          <div className="hidden">
+                            <ModelSelector
+                              key={provider?.name + ':' + modelList.length}
+                              model={model}
+                              setModel={setModel}
+                              modelList={modelList}
                               provider={provider}
-                              apiKey={apiKeys[provider.name] || ''}
-                              setApiKey={(key) => {
-                                onApiKeysChange(provider.name, key);
-                              }}
+                              setProvider={setProvider}
+                              providerList={providerList || (PROVIDER_LIST as ProviderInfo[])}
+                              apiKeys={apiKeys}
+                              modelLoading={isModelLoading}
                             />
-                          )}
+                            {(providerList || []).length > 0 && provider && (
+                              <APIKeyManager
+                                provider={provider}
+                                apiKey={apiKeys[provider.name] || ''}
+                                setApiKey={(key) => {
+                                  onApiKeysChange(provider.name, key);
+                                }}
+                              />
+                            )}
+                          </div>
                         </div>
                       )}
                     </ClientOnly>
