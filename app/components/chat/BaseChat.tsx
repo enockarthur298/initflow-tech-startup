@@ -35,6 +35,7 @@ import type { ProgressAnnotation } from '~/types/context';
 import type { ActionRunner } from '~/lib/runtime/action-runner';
 import { useStore } from '@nanostores/react';
 import { StickToBottom, useStickToBottomContext } from '~/lib/hooks';
+import type { ProviderInfo } from '~/types/model';
 
 
 const TEXTAREA_MIN_HEIGHT = 76;
@@ -52,7 +53,11 @@ interface BaseChatProps {
   enhancingPrompt?: boolean;
   promptEnhanced?: boolean;
   input?: string;
-  // Model and provider are now fixed to Gemini 2.0 Flash and Google respectively
+  model?: string;
+  setModel?: (model: string) => void;
+  provider?: ProviderInfo;
+  setProvider?: (provider: ProviderInfo) => void;
+  providerList?: ProviderInfo[];
   handleStop?: () => void;
   sendMessage?: (event: React.UIEvent, messageInput?: string) => void;
   handleInputChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -65,8 +70,6 @@ interface BaseChatProps {
   setImageDataList?: (dataList: string[]) => void;
   actionAlert?: ActionAlert;
   clearAlert?: () => void;
-  // Removed unused alert props
-  // Removed unused data and actionRunner props
 }
 
 export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(

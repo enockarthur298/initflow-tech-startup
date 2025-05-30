@@ -53,11 +53,16 @@ export class LLMManager {
 
   registerProvider(provider: BaseProvider) {
     if (this._providers.has(provider.name)) {
-      logger.warn(`Provider ${provider.name} is already registered. Skipping.`);
+      if (import.meta.env.DEV) {
+        logger.warn(`Provider ${provider.name} is already registered. Skipping.`);
+      }
       return;
     }
 
-    logger.info('Registering Provider: ', provider.name);
+    if (import.meta.env.DEV) {
+      logger.info('Registering Provider: ', provider.name);
+    }
+    
     this._providers.set(provider.name, provider);
     this._modelList = [...this._modelList, ...provider.staticModels];
   }
