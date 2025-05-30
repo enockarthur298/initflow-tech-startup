@@ -6,6 +6,8 @@ import { generateId } from '~/utils/fileUtils';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { LoadingOverlay } from '~/components/ui/LoadingOverlay';
+import { IconButton } from '~/components/ui/IconButton';
+import { classNames } from '~/utils/classNames';
 
 const IGNORE_PATTERNS = [
   'node_modules/**',
@@ -36,9 +38,10 @@ const ig = ignore().add(IGNORE_PATTERNS);
 interface GitCloneButtonProps {
   className?: string;
   importChat?: (description: string, messages: Message[]) => Promise<void>;
+  asIcon?: boolean;
 }
 
-export default function GitCloneButton({ importChat }: GitCloneButtonProps) {
+export default function GitCloneButton({ importChat, asIcon = false, className }: GitCloneButtonProps) {
   const { ready, gitClone } = useGit();
   const [loading, setLoading] = useState(false);
 
@@ -109,17 +112,34 @@ ${file.content}
     }
   };
 
-  return (
-    <>
-      <button
+  if (asIcon) {
+    return (
+      <IconButton
+        title="Clone Git Repository"
+        className={classNames('transition-all', className)}
         onClick={onClick}
-        title="Clone a Git Repo"
-        className="px-4 py-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary hover:bg-bolt-elements-background-depth-3 transition-all flex items-center gap-2"
+        disabled={!ready || loading}
       >
-        <span className="i-ph:git-branch" />
-        Clone a Git Repo
-      </button>
-      {loading && <LoadingOverlay message="Please wait while we clone the repository..." />}
-    </>
+        <div className="relative">
+          <div className="i-ph:git-branch text-xl"></div>
+          {loading && <div className="i-svg-spinners:90-ring-with-bg text-xl animate-spin absolute -top-2 -right-2"></div>}
+        </div>
+      </IconButton>
+    );
+  }
+
+  return (
+    <button
+      className={classNames(
+        "flex items-center justify-center w-full gap-2 px-4 py-2 text-sm font-medium text-white transition-colors bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed",
+        className
+      )}
+      onClick={onClick}
+      disabled={!ready || loading}
+    >
+      <div className="i-ph:git-branch" />
+      <span>Clone Git Repository</span>
+      {loading && <div className="i-svg-spinners:90-ring-with-bg text-xl animate-spin"></div>}
+    </button>
   );
 }

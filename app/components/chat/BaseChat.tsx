@@ -19,6 +19,7 @@ import * as Tooltip from '@radix-ui/react-tooltip';
 import styles from './BaseChat.module.scss';
 import { ExportChatButton } from '~/components/chat/chatExportAndImport/ExportChatButton';
 import { ImportButtons } from '~/components/chat/chatExportAndImport/ImportButtons';
+import { ImportFolderButton } from '~/components/chat/ImportFolderButton';
 import { ExamplePrompts } from '~/components/chat/ExamplePrompts';
 import GitCloneButton from './GitCloneButton';
 
@@ -516,6 +517,58 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                         <IconButton title="Upload file" className="transition-all" onClick={() => handleFileUpload()}>
                           <div className="i-ph:paperclip text-xl"></div>
                         </IconButton>
+                        
+                        {/* Import Chat Button */}
+                        <IconButton 
+                          title="Import Chat" 
+                          className="transition-all"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            const input = document.createElement('input');
+                            input.type = 'file';
+                            input.accept = '.json';
+                            input.onchange = async (e) => {
+                              const file = (e.target as HTMLInputElement).files?.[0];
+                              if (file && importChat) {
+                                try {
+                                  const reader = new FileReader();
+                                  reader.onload = async (e) => {
+                                    try {
+                                      const content = e.target?.result as string;
+                                      const data = JSON.parse(content) as { messages?: Message[]; description?: string };
+                                      if (Array.isArray(data.messages)) {
+                                        await importChat(data.description || 'Imported Chat', data.messages);
+                                        toast.success('Chat imported successfully');
+                                      } else {
+                                        toast.error('Invalid chat file format');
+                                      }
+                                    } catch (error) {
+                                      toast.error('Failed to parse chat file');
+                                    }
+                                  };
+                                  reader.readAsText(file);
+                                } catch (error) {
+                                  toast.error('Failed to import chat');
+                                }
+                              }
+                            };
+                            input.click();
+                          }}
+                        >
+                          <div className="i-ph:upload-simple text-xl"></div>
+                        </IconButton>
+                        
+                        {/* Import Folder Button */}
+                        <ImportFolderButton 
+                          importChat={importChat} 
+                          asIcon={true} 
+                        />
+                        
+                        {/* Git Clone Button */}
+                        <GitCloneButton 
+                          importChat={importChat} 
+                          asIcon={true}
+                        />
                         
                         {/* 
                         // Commented out Prompt Enhancer Button - Keep for future use
