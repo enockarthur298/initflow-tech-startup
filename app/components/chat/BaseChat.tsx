@@ -23,8 +23,7 @@ import { ImportFolderButton } from '~/components/chat/ImportFolderButton';
 import { ExamplePrompts } from '~/components/chat/ExamplePrompts';
 import GitCloneButton from './GitCloneButton';
 import { ModelSelector } from '~/components/chat/ModelSelector';
-import { createChatFromFolder } from '~/utils/folderImport';
-import { isBinaryFile } from '~/utils/fileUtils';
+
 import FilePreview from './FilePreview';
 import { SpeechRecognitionButton } from '~/components/chat/SpeechRecognition';
 import type { ProviderInfo } from '~/types/model';
@@ -569,43 +568,10 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                           </IconButton>
                         </div>
                         
-                        <div onClick={async () => {
-                          const input = document.createElement('input');
-                          input.type = 'file';
-                          input.webkitdirectory = true;
-                          input.onchange = async (e) => {
-                            const allFiles = Array.from((e.target as HTMLInputElement).files || []);
-                            if (allFiles.length > 0 && importChat) {
-                              try {
-                                // Filter files and separate text and binary files
-                                const textFiles: File[] = [];
-                                const binaryFiles: string[] = [];
-                                
-                                for (const file of allFiles) {
-                                  const isBinary = await isBinaryFile(file);
-                                  if (isBinary) {
-                                    binaryFiles.push(file.webkitRelativePath);
-                                  } else {
-                                    textFiles.push(file);
-                                  }
-                                }
-                                
-                                const folderName = allFiles[0].webkitRelativePath.split('/')[0];
-                                const messages = await createChatFromFolder(textFiles, binaryFiles, folderName);
-                                await importChat(`Imported folder: ${folderName}`, messages);
-                                toast.success('Folder imported successfully');
-                              } catch (error) {
-                                console.error('Error importing folder:', error);
-                                toast.error('Failed to import folder');
-                              }
-                            }
-                          };
-                          input.click();
-                        }}>
-                          <IconButton title="Import Folder" className="transition-all">
-                            <div className="i-ph:folder-simple text-xl"></div>
-                          </IconButton>
-                        </div>
+                        <ImportFolderButton 
+                          importChat={importChat}
+                          asIcon={true}
+                        />
                         
                         {/* Import Chat Button */}
                         <IconButton 
