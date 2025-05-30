@@ -22,9 +22,10 @@ import { ImportButtons } from '~/components/chat/chatExportAndImport/ImportButto
 import { ImportFolderButton } from '~/components/chat/ImportFolderButton';
 import { ExamplePrompts } from '~/components/chat/ExamplePrompts';
 import GitCloneButton from './GitCloneButton';
-
-import FilePreview from './FilePreview';
 import { ModelSelector } from '~/components/chat/ModelSelector';
+import { createChatFromFolder } from '~/utils/folderImport';
+import { isBinaryFile } from '~/utils/fileUtils';
+import FilePreview from './FilePreview';
 import { SpeechRecognitionButton } from '~/components/chat/SpeechRecognition';
 import type { ProviderInfo } from '~/types/model';
 import { ScreenshotStateManager } from './ScreenshotStateManager';
@@ -103,6 +104,8 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     const TEXTAREA_MAX_HEIGHT = chatStarted ? 400 : 200;
     const [apiKeys, setApiKeys] = useState<Record<string, string>>(getApiKeysFromCookies());
     const [modelList, setModelList] = useState<ModelInfo[]>([]);
+    // Set Gemini 2.0 as the default model
+    const [selectedModel, setSelectedModel] = useState('gemini-2.0-flash');
     const [isModelSettingsCollapsed, setIsModelSettingsCollapsed] = useState(false);
     const [isListening, setIsListening] = useState(false);
     const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
@@ -378,8 +381,8 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                         <div className={isModelSettingsCollapsed ? 'hidden' : ''}>
                           <ModelSelector
                             key={provider?.name + ':' + modelList.length}
-                            model={model}
-                            setModel={setModel}
+                            model={selectedModel}
+                            setModel={setSelectedModel}
                             modelList={modelList}
                             provider={provider}
                             setProvider={setProvider}
@@ -514,9 +517,95 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     </ClientOnly>
                     <div className="flex justify-between items-center text-sm p-4 pt-2">
                       <div className="flex gap-1 items-center">
-                        <IconButton title="Upload file" className="transition-all" onClick={() => handleFileUpload()}>
+                        <IconButton 
+                          title="Upload file" 
+                          className="transition-all" 
+                          onClick={() => handleFileUpload()}
+                        >
                           <div className="i-ph:paperclip text-xl"></div>
                         </IconButton>
+                        
+                        <div className="flex items-center">
+                          <GitCloneButton
+                            importChat={importChat}
+                            className="transition-all"
+                            asIcon
+                          />
+                        </div>
+                        
+                        <div onClick={() => {
+                          const input = document.createElement('input');
+                          input.type = 'file';
+                          input.accept = '.json';
+                          input.onchange = async (e) => {
+                            const file = (e.target as HTMLInputElement).files?.[0];
+                            if (file && importChat) {
+                              try {
+                                const reader = new FileReader();
+                                reader.onload = async (e) => {
+                                  try {
+                                    const content = e.target?.result as string;
+                                    const data = JSON.parse(content) as { messages: Message[], description?: string };
+                                    if (Array.isArray(data.messages)) {
+                                      await importChat(data.description || 'Imported Chat', data.messages);
+                                      toast.success('Chat imported successfully');
+                                    }
+                                  } catch (error) {
+                                    console.error('Error importing chat:', error);
+                                    toast.error('Failed to import chat');
+                                  }
+                                };
+                                reader.readAsText(file);
+                              } catch (error) {
+                                console.error('Error importing chat:', error);
+                                toast.error('Failed to import chat');
+                              }
+                            }
+                          };
+                          input.click();
+                        }}>
+                          <IconButton title="Import Chat" className="transition-all">
+                            <div className="i-ph:upload-simple text-xl"></div>
+                          </IconButton>
+                        </div>
+                        
+                        <div onClick={async () => {
+                          const input = document.createElement('input');
+                          input.type = 'file';
+                          input.webkitdirectory = true;
+                          input.onchange = async (e) => {
+                            const allFiles = Array.from((e.target as HTMLInputElement).files || []);
+                            if (allFiles.length > 0 && importChat) {
+                              try {
+                                // Filter files and separate text and binary files
+                                const textFiles: File[] = [];
+                                const binaryFiles: string[] = [];
+                                
+                                for (const file of allFiles) {
+                                  const isBinary = await isBinaryFile(file);
+                                  if (isBinary) {
+                                    binaryFiles.push(file.webkitRelativePath);
+                                  } else {
+                                    textFiles.push(file);
+                                  }
+                                }
+                                
+                                const folderName = allFiles[0].webkitRelativePath.split('/')[0];
+                                const messages = await createChatFromFolder(textFiles, binaryFiles, folderName);
+                                await importChat(`Imported folder: ${folderName}`, messages);
+                                toast.success('Folder imported successfully');
+                              } catch (error) {
+                                console.error('Error importing folder:', error);
+                                toast.error('Failed to import folder');
+                              }
+                            }
+                          };
+                          input.click();
+                        }}>
+                          <IconButton title="Import Folder" className="transition-all">
+                            <div className="i-ph:folder-simple text-xl"></div>
+                          </IconButton>
+                        </div>
                         
                         {/* Import Chat Button */}
                         <IconButton 
@@ -558,44 +647,6 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                           <div className="i-ph:upload-simple text-xl"></div>
                         </IconButton>
                         
-                        {/* Import Folder Button */}
-                        <ImportFolderButton 
-                          importChat={importChat} 
-                          asIcon={true} 
-                        />
-                        
-                        {/* Git Clone Button */}
-                        <GitCloneButton 
-                          importChat={importChat} 
-                          asIcon={true}
-                        />
-                        
-                        {/* 
-                        // Commented out Prompt Enhancer Button - Keep for future use
-                        <IconButton
-                          title="Enhance prompt"
-                          disabled={input.length === 0 || enhancingPrompt}
-                          className={classNames('transition-all', enhancingPrompt ? 'opacity-100' : '')}
-                          onClick={() => {
-                            enhancePrompt?.();
-                            toast.success('Prompt enhanced!');
-                          }}
-                        >
-                          {enhancingPrompt ? (
-                            <div className="i-svg-spinners:90-ring-with-bg text-bolt-elements-loader-progress text-xl animate-spin"></div>
-                          ) : (
-                            <div className="i-bolt:stars text-xl"></div>
-                          )}
-                        </IconButton>
-                        
-                        // Commented out Speech Recognition Button - Keep for future use
-                        <SpeechRecognitionButton
-                          isListening={isListening}
-                          onStart={startListening}
-                          onStop={stopListening}
-                          disabled={isStreaming}
-                        />
-                        */}
                         {chatStarted && <ClientOnly>{() => <ExportChatButton exportChat={exportChat} />}</ClientOnly>}
                         <IconButton
                           title="Model Settings"
@@ -609,16 +660,16 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                           disabled={!providerList || providerList.length === 0}
                         >
                           <div className={`i-ph:caret-${isModelSettingsCollapsed ? 'right' : 'down'} text-lg`} />
-                          {isModelSettingsCollapsed ? <span className="text-xs">{model}</span> : <span />}
+                          {isModelSettingsCollapsed ? <span className="text-xs">Gemini 2.0</span> : <span />}
                         </IconButton>
                       </div>
-                      {input.length > 3 ? (
+                      {input.length > 3 && (
                         <div className="text-xs text-bolt-elements-textTertiary">
-                          Use <kbd className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Shift</kbd>{' '}
-                          + <kbd className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Return</kbd>{' '}
-                          a new line
+                          Use <kbd className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Shift</kbd>
+                          + <kbd className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Return</kbd>
+                          for new line
                         </div>
-                      ) : null}
+                      )}
                     </div>
                   </div>
                 </div>
