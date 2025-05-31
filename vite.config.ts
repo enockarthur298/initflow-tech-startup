@@ -6,9 +6,6 @@ import { optimizeCssModules } from 'vite-plugin-optimize-css-modules';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import * as dotenv from 'dotenv';
 import { execSync } from 'child_process';
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
-import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill';
-import rollupNodePolyFill from 'rollup-plugin-polyfill-node';
 
 dotenv.config();
 
@@ -21,64 +18,22 @@ const getGitHash = () => {
   }
 };
 
+
+
+
 export default defineConfig((config) => {
   return {
     define: {
       __COMMIT_HASH: JSON.stringify(getGitHash()),
       __APP_VERSION: JSON.stringify(process.env.npm_package_version),
-      global: 'globalThis',
-      'process.env': process.env.CI ? '{}' : 'process.env',
+      // 'process.env': JSON.stringify(process.env)
     },
     build: {
       target: 'esnext',
-      rollupOptions: {
-        plugins: [
-          // Enable rollup polyfills for node.js modules
-          rollupNodePolyFill(),
-        ],
-      },
-      commonjsOptions: {
-        transformMixedEsModules: true,
-      },
-    },
-    optimizeDeps: {
-      esbuildOptions: {
-        // Node.js global to browser globalThis
-        define: {
-          global: 'globalThis',
-        },
-        // Enable esbuild polyfill plugins
-        plugins: [
-          NodeGlobalsPolyfillPlugin({
-            process: true,
-            buffer: true,
-          }),
-          NodeModulesPolyfillPlugin(),
-        ],
-      },
     },
     plugins: [
       nodePolyfills({
-        // Whether to polyfill specific node:* protocol imports like node:path
-        protocolImports: true,
-        // Include all required Node.js polyfills
-        include: [
-          'path',
-          'buffer',
-          'process',
-          'crypto',
-          'stream',
-          'util',
-          'os',
-          'http',
-          'https',
-          'url',
-          'zlib',
-          'querystring',
-          'events',
-          'string_decoder',
-          'stream/web',
-        ],
+        include: ['path', 'buffer', 'process'],
       }),
       config.mode !== 'test' && remixCloudflareDevProxy(),
       remixVitePlugin({
@@ -130,3 +85,18 @@ function chrome129IssuePlugin() {
     },
   };
 }
+
+
+
+
+
+export default defineConfig({
+  plugins: [
+    nodePolyfills({
+      // Whether to polyfill specific node:* protocol imports like node:path
+      protocolImports: true,
+      // Explicitly include crypto and stream
+      include: ['crypto', 'stream']
+    }),
+  ],
+});
