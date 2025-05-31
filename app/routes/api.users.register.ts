@@ -18,7 +18,7 @@ export const action = async ({ request, params, context }: ActionFunctionArgs) =
     }
     
     // Forward the request to your Python backend
-    const pythonBackendUrl = process.env.PYTHON_BACKEND_URL || 'backend.initflow.online';
+    const pythonBackendUrl = process.env.PYTHON_BACKEND_URL || 'https://backend.initflow.online';
     
     try {
       const response = await fetch(`${pythonBackendUrl}/api/users/register`, {
