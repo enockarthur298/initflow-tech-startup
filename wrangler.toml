@@ -1,6 +1,7 @@
 name = "initflow"
 compatibility_date = "2024-05-01"
 compatibility_flags = ["nodejs_compat"]
+main = "build/server/index.js"
 
 [site]
 bucket = "./build/client"
@@ -15,14 +16,3 @@ command = "npm run build"
 # [[r2_buckets]]
 # binding = "MY_BUCKET"
 # bucket_name = "my-bucket"
-
-[env.production]
-name = "initflow-production"
-
-[env.staging]
-name = "initflow-staging"
-route = "staging.initflow.tech/*"
-
-[env.development]
-name = "initflow-dev"
-route = "dev.initflow.tech/*"
