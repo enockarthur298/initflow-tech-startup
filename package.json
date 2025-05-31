@@ -6,8 +6,12 @@
   "sideEffects": false,
   "type": "module",
   "version": "0.0.6",
+  "cloudflare": {
+    "compatibilityDate": "2024-05-01",
+    "compatibilityFlags": ["nodejs_compat"]
+  },
   "scripts": {
-    "deploy": "npm run build && wrangler pages deploy",
+    "deploy": "npm run build && wrangler pages deploy --compatibility-date=2024-05-01 --compatibility-flag=nodejs_compat",
     "build": "remix vite:build",
     "dev": "node pre-start.cjs  && remix vite:dev",
     "test": "vitest --run",
