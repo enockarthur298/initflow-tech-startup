@@ -1,4 +1,4 @@
-import { json, type ActionFunctionArgs } from '@remix-run/node';
+import { json, type ActionFunctionArgs } from '@remix-run/cloudflare';
 import { getAuth } from '@clerk/remix/ssr.server';
 
 export const action = async ({ request, params, context }: ActionFunctionArgs) => {
@@ -18,7 +18,7 @@ export const action = async ({ request, params, context }: ActionFunctionArgs) =
     }
     
     // Forward the request to your Python backend
-    const pythonBackendUrl = process.env.PYTHON_BACKEND_URL || 'http://localhost:5000';
+    const pythonBackendUrl = process.env.PYTHON_BACKEND_URL || 'backend.initflow.online';
     
     try {
       const response = await fetch(`${pythonBackendUrl}/api/users/register`, {
@@ -30,6 +30,8 @@ export const action = async ({ request, params, context }: ActionFunctionArgs) =
           user_id: effectiveUserId,
           email: body.email || ''
         }),
+        // Add timeout to prevent hanging requests
+        signal: AbortSignal.timeout(5000) // 5 second timeout
       });
       
       if (!response.ok) {

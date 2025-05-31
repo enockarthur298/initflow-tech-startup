@@ -1,4 +1,4 @@
-import { json, type LoaderFunctionArgs } from '@remix-run/node';
+import { json, type LoaderFunctionArgs } from '@remix-run/cloudflare';
 import { getAuth } from '@clerk/remix/ssr.server';
 
 export const loader = async ({ request, params, context }: LoaderFunctionArgs) => {
