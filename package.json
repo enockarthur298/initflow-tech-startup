@@ -12,7 +12,8 @@
   },
   "scripts": {
     "deploy": "npm run build && wrangler pages deploy --compatibility-date=2024-05-01 --compatibility-flag=nodejs_compat",
-    "build": "remix vite:build",
+    "build": "remix vite:build && npm run build:server",
+    "build:server": "esbuild ./app/entry.server.tsx --format=esm --bundle --minify --platform=node --outfile=build/server/index.js",
     "dev": "node pre-start.cjs  && remix vite:dev",
     "test": "vitest --run",
     "test:watch": "vitest",
