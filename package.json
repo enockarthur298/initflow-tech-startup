@@ -116,6 +116,8 @@
   "devDependencies": {
     "@blitz/eslint-plugin": "0.1.0",
     "@cloudflare/workers-types": "^4.20241127.0",
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@remix-run/dev": "^2.15.0",
     "@types/crypto-js": "^4.2.2",
     "@types/diff": "^5.2.3",
@@ -131,6 +133,7 @@
     "node-fetch": "^3.3.2",
     "pnpm": "^9.14.4",
     "prettier": "^3.4.1",
+    "rollup-plugin-polyfill-node": "^0.13.0",
     "sass-embedded": "^1.81.0",
     "typescript": "^5.7.2",
     "unified": "^11.0.5",

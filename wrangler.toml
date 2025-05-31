@@ -1,0 +1,23 @@
+# wrangler.toml
+name = "initflow"
+main = "build/remix/index.js"
+compatibility_date = "2024-09-23"
+
+[build]
+command = "npm run build"
+publish = "build/client"
+
+[build.upload]
+format = "modules"
+main = "./build/worker/index.js"
+
+[site]
+bucket = "build/client"
+
+# Enable Node.js compatibility for Cloudflare Pages
+[compatibility_flags]
+nodejs_compat = true
+
+# Add Node.js polyfills
+[node_compat]
+enable_node_compat = true

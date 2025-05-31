@@ -264,6 +264,12 @@ importers:
       '@cloudflare/workers-types':
         specifier: ^4.20241127.0
         version: 4.20241127.0
+      '@esbuild-plugins/node-globals-polyfill':
+        specifier: ^0.2.3
+        version: 0.2.3(esbuild@0.17.19)
+      '@esbuild-plugins/node-modules-polyfill':
+        specifier: ^0.2.2
+        version: 0.2.2(esbuild@0.17.19)
       '@remix-run/dev':
         specifier: ^2.15.0
         version: 2.15.0(@remix-run/react@2.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.7.2))(@types/node@22.10.1)(sass-embedded@1.81.0)(typescript@5.7.2)(vite@5.4.11(@types/node@22.10.1)(sass-embedded@1.81.0))(wrangler@3.91.0(@cloudflare/workers-types@4.20241127.0))
@@ -309,6 +315,9 @@ importers:
       prettier:
         specifier: ^3.4.1
         version: 3.4.1
+      rollup-plugin-polyfill-node:
+        specifier: ^0.13.0
+        version: 0.13.0(rollup@4.28.0)
       sass-embedded:
         specifier: ^1.81.0
         version: 1.81.0
@@ -5500,6 +5509,11 @@ packages:
 
   rollup-plugin-node-polyfills@0.2.1:
     resolution: {integrity: sha512-4kCrKPTJ6sK4/gLL/U5QzVT8cxJcofO0OU74tnB19F40cmuAKSzH5/siithxlofFEjwvw1YAhPmbvGNA6jEroA==}
+
+  rollup-plugin-polyfill-node@0.13.0:
+    resolution: {integrity: sha512-FYEvpCaD5jGtyBuBFcQImEGmTxDTPbiHjJdrYIp+mFIwgXiXabxvKUK7ZT9P31ozu2Tqm9llYQMRWsfvTMTAOw==}
+    peerDependencies:
+      rollup: ^1.20.0 || ^2.0.0 || ^3.0.0 || ^4.0.0
 
   rollup-pluginutils@2.8.2:
     resolution: {integrity: sha512-EEp9NhnUkwY8aif6bxgovPHMoMoNr2FulJziTndpt5H9RdwC47GSGuII9XxpSdzVGM0GWrNPHV6ie1LTNJPaLQ==}
@@ -12727,6 +12741,11 @@ snapshots:
   rollup-plugin-node-polyfills@0.2.1:
     dependencies:
       rollup-plugin-inject: 3.0.2
+
+  rollup-plugin-polyfill-node@0.13.0(rollup@4.28.0):
+    dependencies:
+      '@rollup/plugin-inject': 5.0.5(rollup@4.28.0)
+      rollup: 4.28.0
 
   rollup-pluginutils@2.8.2:
     dependencies:
