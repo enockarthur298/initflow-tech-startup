@@ -18,9 +18,6 @@ const getGitHash = () => {
   }
 };
 
-
-
-
 export default defineConfig((config) => {
   return {
     define: {
@@ -33,7 +30,10 @@ export default defineConfig((config) => {
     },
     plugins: [
       nodePolyfills({
-        include: ['path', 'buffer', 'process'],
+        // Whether to polyfill specific node:* protocol imports like node:path
+        protocolImports: true,
+        // Include all required Node.js polyfills
+        include: ['path', 'buffer', 'process', 'crypto', 'stream'],
       }),
       config.mode !== 'test' && remixCloudflareDevProxy(),
       remixVitePlugin({
@@ -85,18 +85,3 @@ function chrome129IssuePlugin() {
     },
   };
 }
-
-
-
-
-
-export default defineConfig({
-  plugins: [
-    nodePolyfills({
-      // Whether to polyfill specific node:* protocol imports like node:path
-      protocolImports: true,
-      // Explicitly include crypto and stream
-      include: ['crypto', 'stream']
-    }),
-  ],
-});
