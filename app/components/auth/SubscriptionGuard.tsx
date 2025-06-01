@@ -169,11 +169,14 @@ export function SubscriptionGuard({ children }: SubscriptionGuardProps) {
                   
                   <ul className="space-y-3 mb-6">
                     {[
-                      'Unlimited AI Generations',
-                      'Advanced Analytics Dashboard',
-                      'Priority Email Support',
+                      'Create Unlimited Apps',
+                      'GitHub Integration',
+                      'Full Stack Web App Builder',
+                      'Dev-server with Preview',
+                      'Dev Assistant',
                       'Early Access to New Features',
-                      'Custom Integrations'
+                      'Priority Email Support',
+                      'Host website to Netlify'
                     ].map((feature, index) => (
                       <li key={index} className="flex items-center">
                         <span className="i-ph:check-circle-fill text-green-500 mr-2"></span>
