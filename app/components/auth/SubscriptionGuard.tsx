@@ -194,12 +194,12 @@ export function SubscriptionGuard({ children }: SubscriptionGuardProps) {
                   Continue
                 </button>
                 
-                <button
+                {/* <button
                   onClick={handleMaybeLater}
                   className="w-full px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
                 >
                   Continue with Basic (Limited Features)
-                </button>
+                </button> */}
                 
                 <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-2">
                   Need help? <a href="#" className="text-blue-600 hover:underline dark:text-blue-400">Contact support</a>
