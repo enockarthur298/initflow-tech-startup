@@ -163,7 +163,7 @@ export function SubscriptionGuard({ children }: SubscriptionGuardProps) {
                 
                 <div className="mt-6 bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
                   <div className="flex justify-center items-baseline mb-6">
-                    <span className="text-4xl font-bold text-gray-900 dark:text-white">$9</span>
+                    <span className="text-4xl font-bold text-gray-900 dark:text-white">$25</span>
                     <span className="text-gray-500 dark:text-gray-400 ml-2">/month</span>
                   </div>
                   
