@@ -343,7 +343,6 @@
 <body>
   <div class="container">
     <header class="header">
-      <div class="badge">LIMITED TIME OFFER</div>
       <h1>Build full-stack applications with just your descriptions</h1>
       <p class="subtitle">While others focus on prototypes, we deliver production-ready Full Stack Web Apps you can actually launch. Build better, faster, and smarter with InitFlow Pro.</p>
     </header>
@@ -370,7 +369,7 @@
     
     <div class="testimonial">
       <blockquote class="testimonial-quote">
-        "InitFlow Pro has completely transformed how I approach development. The AI-powered code suggestions save me hours every day, and the support team is incredibly responsive. Worth every penny!"
+        "Building production-ready apps in minutes instead of days has been a game-changer. InitFlow Pro's intuitive interface and powerful features make rapid application development not just possible, but incredibly efficient."
       </blockquote>
       <div class="testimonial-content">
         <div class="testimonial-avatar">JD</div>
@@ -424,33 +423,38 @@
   </div>
 
   <script>
-    // FAQ toggle functionality
-    function toggleFaq(button) {
-      const faqItem = button.parentElement;
-      const answer = button.nextElementSibling;
-      const icon = button.querySelector('.fa-chevron-down');
-      
-      // Toggle active class on FAQ item
-      faqItem.classList.toggle('active');
-      
-      // Toggle answer visibility
-      if (answer.style.display === 'block') {
-        answer.style.display = 'none';
-        icon.classList.remove('fa-chevron-up');
-        icon.classList.add('fa-chevron-down');
-      } else {
-        answer.style.display = 'block';
-        icon.classList.remove('fa-chevron-down');
-        icon.classList.add('fa-chevron-up');
-      }
-    }
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // FAQ toggle functionality using event delegation
+      document.addEventListener('click', function(event) {
+        const button = event.target.closest('.faq-question');
+        if (!button) return;
+        
+        const faqItem = button.parentElement;
+        const answer = button.nextElementSibling;
+        const icon = button.querySelector('i');
+        
+        // Toggle active class on FAQ item
+        faqItem.classList.toggle('active');
+        
+        // Toggle answer visibility with smooth animation
+        if (answer.style.display === 'block') {
+          answer.style.display = 'none';
+          icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+        } else {
+          answer.style.display = 'block';
+          icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+        }
+      });
 
-    Paddle.Environment.set("sandbox");
-    Paddle.Initialize({
-      token: "test_074e3c345e9275b92f43152d2c5",
-      eventCallback: function(data) {
-        console.log(data);
-      }
+      // Initialize Paddle
+      Paddle.Environment.set("sandbox");
+      Paddle.Initialize({
+        token: "test_074e3c345e9275b92f43152d2c5",
+        eventCallback: function(data) {
+          console.log(data);
+        }
+      });
     });
     
     function openCheckout() {
