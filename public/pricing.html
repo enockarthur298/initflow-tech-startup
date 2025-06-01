@@ -424,6 +424,27 @@
   </div>
 
   <script>
+    // FAQ toggle functionality
+    function toggleFaq(button) {
+      const faqItem = button.parentElement;
+      const answer = button.nextElementSibling;
+      const icon = button.querySelector('.fa-chevron-down');
+      
+      // Toggle active class on FAQ item
+      faqItem.classList.toggle('active');
+      
+      // Toggle answer visibility
+      if (answer.style.display === 'block') {
+        answer.style.display = 'none';
+        icon.classList.remove('fa-chevron-up');
+        icon.classList.add('fa-chevron-down');
+      } else {
+        answer.style.display = 'block';
+        icon.classList.remove('fa-chevron-down');
+        icon.classList.add('fa-chevron-up');
+      }
+    }
+
     Paddle.Environment.set("sandbox");
     Paddle.Initialize({
       token: "test_074e3c345e9275b92f43152d2c5",
