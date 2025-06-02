@@ -34,6 +34,7 @@ import type { ModelInfo } from '~/lib/modules/llm/types';
 import type { ProgressAnnotation } from '~/types/context';
 import type { ActionRunner } from '~/lib/runtime/action-runner';
 import { useStore } from '@nanostores/react';
+import { useAuth } from '@clerk/remix';
 import { StickToBottom, useStickToBottomContext } from '~/lib/hooks';
 import type { ProviderInfo } from '~/types/model';
 
@@ -109,6 +110,14 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     const [apiKeys, setApiKeys] = useState<Record<string, string>>({});
     // Model settings collapsed state
     const [isModelSettingsCollapsed, setIsModelSettingsCollapsed] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { isLoaded, isSignedIn } = useAuth();
+
+    // Update menu state when authentication state changes
+    useEffect(() => {
+      setIsMenuOpen(!!isSignedIn);
+    }, [isSignedIn]);
+
     const [isListening, setIsListening] = useState(false);
     const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
     const [transcript, setTranscript] = useState('');
@@ -267,7 +276,9 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         className={classNames(styles.BaseChat, 'relative flex h-full w-full overflow-hidden')}
         data-chat-visible={showChat}
       >
-        <ClientOnly>{() => <Menu />}</ClientOnly>
+        <ClientOnly fallback={null}>
+          {() => <Menu />}
+        </ClientOnly>
         <div className="flex flex-col lg:flex-row overflow-y-auto w-full h-full">
           <div className={classNames(styles.Chat, 'flex flex-col flex-grow lg:min-w-[var(--chat-min-width)] h-full')}>
             {!chatStarted && (

@@ -10,6 +10,7 @@ import { logger } from '~/utils/logger';
 import { HistoryItem } from './HistoryItem';
 import { binDates } from './date-binning';
 import { useSearchFilter } from '~/lib/hooks/useSearchFilter';
+import { useAuth } from '@clerk/remix';
 
 const menuVariants = {
   closed: {
@@ -38,6 +39,7 @@ export const Menu = () => {
   const { duplicateCurrentChat, exportChat } = useChatHistory();
   const menuRef = useRef<HTMLDivElement>(null);
   const [list, setList] = useState<ChatHistoryItem[]>([]);
+  const { isLoaded, isSignedIn } = useAuth();
   const [open, setOpen] = useState(false);
   const [dialogContent, setDialogContent] = useState<DialogContent>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -87,10 +89,17 @@ export const Menu = () => {
   }, [open]);
 
   useEffect(() => {
+    // Set initial sidebar state based on authentication
+    setOpen(!!isSignedIn);
+  }, [isSignedIn]);
+
+  useEffect(() => {
     const enterThreshold = 40;
     const exitThreshold = 40;
 
     function onMouseMove(event: MouseEvent) {
+      if (!isSignedIn) return; // Don't open on hover if not signed in
+      
       if (event.pageX < enterThreshold) {
         setOpen(true);
       }
