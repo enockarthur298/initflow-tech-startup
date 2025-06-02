@@ -86,13 +86,16 @@
       background: white;
       border-radius: 1rem;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-      padding: 2.5rem;
+      padding: 2rem;
       flex: 1 1 350px;
       max-width: 420px;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       position: relative;
       overflow: hidden;
       border: 1px solid var(--gray-200);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
     
     .pricing-card:hover {
@@ -148,8 +151,28 @@
     
     .features {
       list-style: none;
-      margin: 2rem 0;
+      margin: 1.5rem 0;
       text-align: left;
+      flex: 1;
+      overflow-y: auto;
+      max-height: 400px;
+      padding-right: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary-600) var(--gray-100);
+    }
+    
+    .features::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .features::-webkit-scrollbar-track {
+      background: var(--gray-100);
+      border-radius: 3px;
+    }
+    
+    .features::-webkit-scrollbar-thumb {
+      background-color: var(--primary-600);
+      border-radius: 3px;
     }
     
     .features li {
@@ -323,18 +346,76 @@
     }
     
     @media (max-width: 768px) {
+      .container {
+        padding: 1.5rem 1rem;
+      }
+      
       .pricing-cards {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+        gap: 1.5rem;
       }
       
       .pricing-card {
         width: 100%;
-        max-width: 400px;
+        max-width: 100%;
+        padding: 1.5rem;
       }
       
       h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .features {
+        max-height: 300px;
+        margin: 1.25rem 0;
+      }
+      
+      .price {
+        font-size: 3rem;
+        margin: 1.25rem 0;
+      }
+      
+      .testimonial {
+        margin-top: 3rem;
+        padding: 1.5rem;
+      }
+      
+      .testimonial-quote {
+        font-size: 1rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .features {
+        max-height: 250px;
+      }
+      
+      .pricing-card {
+        padding: 1.25rem;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .price {
+        font-size: 2.5rem;
+      }
+      
+      .plan-name {
+        font-size: 1.25rem;
+      }
+      
+      .subscribe-btn {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
       }
     }
   </style>
@@ -348,23 +429,27 @@
       <p class="subtitle">While others focus on prototypes, we deliver production-ready Full Stack Web Apps you can actually launch. Build better, faster, and smarter with InitFlow Pro.</p>
     </header>
     
-    <div class="pricing-cards" style="justify-content: center;">
-      <div class="pricing-card" style="max-width: 500px; margin: 0 auto; border: 2px solid var(--primary-600); position: relative;">
-        <div class="plan-name">Pro Plan</div>
-        <div class="price">$25<span>/month</span></div>
-        <div class="price-annual">Billed monthly, cancel anytime</div>
-        <ul class="features">
-          <li>Create Unlimited Apps</li>
-          <li>GitHub Integration</li>
-          <li>Full Stack Web App Builder</li>
-          <li>Dev-server with Preview</li>
-          <li>Dev Assistant</li>
-          <li>Early Access to New Features</li>
-          <li>Priority Email Support</li>
-          <li>Host website to Netlify</li>
-        </ul>
+    <div class="pricing-cards">
+      <div class="pricing-card" style="border: 2px solid var(--primary-600);">
+        <div>
+          <div class="plan-name">Pro Plan</div>
+          <div class="price">$25<span>/month</span></div>
+          <div class="price-annual">Billed monthly, cancel anytime</div>
+          <ul class="features">
+            <li>Create Unlimited Apps</li>
+            <li>GitHub Integration</li>
+            <li>Full Stack Web App Builder</li>
+            <li>Dev-server with Preview</li>
+            <li>Dev Assistant</li>
+            <li>Early Access to New Features</li>
+            <li>Priority Email Support</li>
+            <li>Host website to Netlify</li>
+            <li>Custom Domain Support</li>
+            <li>Team Collaboration</li>
+            <li>Advanced Analytics</li>
+          </ul>
+        </div>
         <button onclick="openCheckout()" class="subscribe-btn">Get Started with Pro</button>
-        
       </div>
     </div>
     
