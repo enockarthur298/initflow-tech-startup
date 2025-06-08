@@ -1,22 +1,15 @@
 import { json, type MetaFunction } from '@remix-run/cloudflare';
-import { ClientOnly } from 'remix-utils/client-only';
-import { BaseChat } from '~/components/chat/BaseChat';
-import { Chat } from '~/components/chat/Chat.client';
-import { Header } from '~/components/header/Header';
-import BackgroundRays from '~/components/ui/BackgroundRays';
+import LandingPage from '~/components/landing/LandingPage';
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'InitFlow' }, { name: 'description', content: 'Build Full-Stack Apps instantly with nocode' }];
+  return [
+    { title: 'InitFlow - Build Full-Stack Apps Instantly' },
+    { name: 'description', content: 'Transform your ideas into reality with our no-code platform. Create, deploy, and scale your applications faster than ever before.' }
+  ];
 };
 
 export const loader = () => json({});
 
 export default function Index() {
-  return (
-    <div className="flex flex-col h-full w-full bg-bolt-elements-background-depth-1">
-      <BackgroundRays />
-      <Header />
-      <ClientOnly fallback={<BaseChat />}>{() => <Chat />}</ClientOnly>
-    </div>
-  );
+  return <LandingPage />;
 }
