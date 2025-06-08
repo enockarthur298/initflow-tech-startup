@@ -25,6 +25,13 @@ const features = [
     icon: '🛡️',
     color: 'from-emerald-400 to-teal-600',
     iconBg: 'bg-gradient-to-br from-emerald-400/20 to-teal-600/20'
+  },
+  {
+    title: 'Deploy Anywhere',
+    description: 'One-click deployment to our global cloud or export your code to host anywhere. We make deployment seamless and hassle-free.',
+    icon: '☁️',
+    color: 'from-blue-400 to-cyan-500',
+    iconBg: 'bg-gradient-to-br from-blue-400/20 to-cyan-500/20'
   }
 ];
 
@@ -51,8 +58,8 @@ export default function LandingPage() {
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">Without Writing Code</span>
           </h1>
           
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed">
-            Transform your ideas into reality with our intuitive no-code platform. Create, deploy, and scale beautiful applications faster than ever before.
+          <p className="text-xl text-slate-300 max-w-4xl mx-auto mb-10 leading-relaxed">
+            Transform your ideas into production-ready applications with our intuitive visual development platform. Design beautiful UIs, connect to databases, add authentication, and deploy to our global cloud - all without writing a single line of code. Build web apps, dashboards, internal tools, and more in minutes, not days.
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -146,18 +153,129 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonial */}
+      {/* Cloud Hosting Section */}
       <section className="py-24 bg-gradient-to-b from-slate-900/50 to-slate-950/80">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="text-5xl mb-6">"</div>
-          <blockquote className="text-2xl md:text-3xl font-medium text-white mb-8 leading-relaxed">
-            This platform has completely transformed how we build and deploy applications. What used to take weeks now takes hours, and the results are even better than before.
-          </blockquote>
-          <div className="flex items-center justify-center space-x-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold">JD</div>
-            <div className="text-left">
-              <div className="font-medium text-white">John Doe</div>
-              <div className="text-slate-400">CTO at TechCorp</div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Deploy Your Apps with Ease</h2>
+            <p className="text-xl text-slate-300 max-w-3xl mx-auto">
+              Take your applications live with our powerful cloud hosting platform
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Cloud Hosting Card */}
+            <div className="bg-gradient-to-br from-slate-800/30 to-slate-900/50 backdrop-blur-sm border border-slate-800/50 rounded-2xl p-8 hover:border-indigo-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/5">
+              <div className="w-14 h-14 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-xl flex items-center justify-center text-2xl mb-6">
+                ☁️
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-3">One-Click Deployment</h3>
+              <p className="text-slate-400 mb-6">Deploy your applications with a single click to our global infrastructure. We handle the servers, scaling, and SSL certificates.</p>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start">
+                  <svg className="h-5 w-5 text-green-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Global CDN for fast loading</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-5 w-5 text-green-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Automatic SSL certificates</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-5 w-5 text-green-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Built-in CI/CD pipeline</span>
+                </li>
+              </ul>
+              <Link
+                to="/pricing"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-medium rounded-xl transition-all duration-200 transform hover:-translate-y-0.5 shadow-lg hover:shadow-blue-500/30"
+              >
+                View Hosting Plans
+                <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </Link>
+            </div>
+
+            {/* Export Option */}
+            <div className="bg-gradient-to-br from-slate-800/30 to-slate-900/50 backdrop-blur-sm border border-slate-800/50 rounded-2xl p-8 hover:border-purple-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-500/5">
+              <div className="w-14 h-14 bg-gradient-to-br from-purple-500/20 to-indigo-600/20 rounded-xl flex items-center justify-center text-2xl mb-6">
+                📦
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-3">Export & Self-Host</h3>
+              <p className="text-slate-400 mb-6">Prefer to host it yourself? Export your application's source code and deploy it to any cloud provider or your own servers.</p>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start">
+                  <svg className="h-5 w-5 text-purple-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Clean, production-ready code</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-5 w-5 text-purple-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Full ownership and control</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-5 w-5 text-purple-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>No vendor lock-in</span>
+                </li>
+              </ul>
+              <Link
+                to="/pricing"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-medium rounded-xl transition-all duration-200 transform hover:-translate-y-0.5 shadow-lg hover:shadow-purple-500/30"
+              >
+                Learn About Exporting
+                <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </Link>
+            </div>
+
+            {/* Enterprise Hosting */}
+            <div className="bg-gradient-to-br from-slate-800/30 to-slate-900/50 backdrop-blur-sm border border-slate-800/50 rounded-2xl p-8 hover:border-emerald-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/5">
+              <div className="w-14 h-14 bg-gradient-to-br from-emerald-500/20 to-teal-600/20 rounded-xl flex items-center justify-center text-2xl mb-6">
+                🚀
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-3">Enterprise Solutions</h3>
+              <p className="text-slate-400 mb-6">Need more power? Our enterprise plans offer dedicated infrastructure, custom domains, and priority support for mission-critical applications.</p>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start">
+                  <svg className="h-5 w-5 text-emerald-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Dedicated infrastructure</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-5 w-5 text-emerald-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Custom domains & SSL</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-5 w-5 text-emerald-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>24/7 priority support</span>
+                </li>
+              </ul>
+              <Link
+                to="/contact"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-medium rounded-xl transition-all duration-200 transform hover:-translate-y-0.5 shadow-lg hover:shadow-emerald-500/30"
+              >
+                Contact Sales
+                <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </Link>
             </div>
           </div>
         </div>
