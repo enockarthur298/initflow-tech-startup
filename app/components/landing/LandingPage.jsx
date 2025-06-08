@@ -59,7 +59,7 @@ export default function LandingPage() {
           </h1>
           
           <p className="text-xl text-slate-300 max-w-4xl mx-auto mb-10 leading-relaxed">
-            Transform your ideas into production-ready applications with our intuitive visual development platform. Design beautiful UIs, connect to databases, add authentication, and deploy to our global cloud - all without writing a single line of code. Build web apps, dashboards, internal tools, and more in minutes, not days.
+            Describe your app in plain English and watch it come to life. Our AI-powered platform builds full-stack applications with beautiful UIs, databases, and authentication—no coding required. Deploy to our global cloud in minutes.
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
