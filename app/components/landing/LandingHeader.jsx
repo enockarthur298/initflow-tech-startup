@@ -16,9 +16,6 @@ export function LandingHeader() {
           <Link to="/pricing" className="text-bolt-text-secondary hover:text-bolt-text-primary transition-colors">
             Pricing
           </Link>
-          <Link to="/docs" className="text-bolt-text-secondary hover:text-bolt-text-primary transition-colors">
-            Documentation
-          </Link>
         </nav>
         
         <div className="flex items-center space-x-4">
