@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from '@remix-run/react';
+import { SignedIn, SignedOut } from '@clerk/remix';
+import { SignInButton } from '@clerk/remix';
 import { LandingHeader } from './LandingHeader';
 
 const features = [
@@ -54,15 +56,27 @@ export default function LandingPage() {
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link
-              to="/chat"
-              className="px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium rounded-xl transition-all duration-200 transform hover:-translate-y-0.5 shadow-lg hover:shadow-indigo-500/30 flex items-center justify-center gap-2 group"
-            >
-              <span>Get Started for Free</span>
-              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </Link>
+            <SignedOut>
+              <SignInButton mode="modal" redirectUrl="/chat">
+                <button className="px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium rounded-xl transition-all duration-200 transform hover:-translate-y-0.5 shadow-lg hover:shadow-indigo-500/30 flex items-center justify-center gap-2 group cursor-pointer">
+                  <span>Get Started for Free</span>
+                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <Link
+                to="/chat"
+                className="px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium rounded-xl transition-all duration-200 transform hover:-translate-y-0.5 shadow-lg hover:shadow-indigo-500/30 flex items-center justify-center gap-2 group"
+              >
+                <span>Go to Chat</span>
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </Link>
+            </SignedIn>
             <Link
               to="/pricing"
               className="px-8 py-4 bg-slate-800 hover:bg-slate-700/50 border border-slate-700 text-slate-200 font-medium rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-indigo-500/10"
