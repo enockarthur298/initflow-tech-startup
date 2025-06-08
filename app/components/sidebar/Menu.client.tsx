@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from '@remix-run/react';
 import { toast } from 'react-toastify';
 import { Dialog, DialogButton, DialogDescription, DialogRoot, DialogTitle } from '~/components/ui/Dialog';
+import { SettingsWindow } from '~/components/settings/SettingsWindow';
 import { SettingsButton } from '~/components/ui/SettingsButton';
 import { db, deleteById, getAll, chatId, type ChatHistoryItem, useChatHistory } from '~/lib/persistence';
 import { cubicEasingFn } from '~/utils/easings';
@@ -42,6 +43,7 @@ export const Menu = () => {
   const { isLoaded, isSignedIn } = useAuth();
   const [open, setOpen] = useState(false);
   const [dialogContent, setDialogContent] = useState<DialogContent>(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const { filteredItems: filteredList, handleSearchChange } = useSearchFilter({
     items: list,
@@ -210,9 +212,10 @@ export const Menu = () => {
           </DialogRoot>
         </div>
         <div className="flex items-center justify-start border-t border-bolt-elements-borderColor p-4">
-          <SettingsButton asLink />
+          <SettingsButton onClick={() => setIsSettingsOpen(true)} />
         </div>
       </div>
+      <SettingsWindow open={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </motion.div>
   );
 };
