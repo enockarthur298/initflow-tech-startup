@@ -110,13 +110,14 @@ function App() {
   }, [theme]);
 
   return (
-    <AuthGuard>
-      <SubscriptionGuard>
+    // Temporarily disabled authentication
+    // <AuthGuard>
+    //   <SubscriptionGuard>
         <Layout>
           <Outlet />
         </Layout>
-      </SubscriptionGuard>
-    </AuthGuard>
+    //   </SubscriptionGuard>
+    // </AuthGuard>
   );
 }
 
