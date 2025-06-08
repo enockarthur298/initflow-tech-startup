@@ -1,5 +1,6 @@
 import { motion, type Variants } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Link } from '@remix-run/react';
 import { toast } from 'react-toastify';
 import { Dialog, DialogButton, DialogDescription, DialogRoot, DialogTitle } from '~/components/ui/Dialog';
 import { SettingsWindow } from '~/components/settings/SettingsWindow';
@@ -137,13 +138,14 @@ export const Menu = () => {
       <div className="h-[60px]" /> {/* Spacer for top margin */}
       <div className="flex-1 flex flex-col h-full w-full overflow-hidden">
         <div className="p-4 select-none">
-          <a
-            href="/"
+          <Link
+            to="/chat"
             className="flex gap-2 items-center bg-bolt-elements-sidebar-buttonBackgroundDefault text-bolt-elements-sidebar-buttonText hover:bg-bolt-elements-sidebar-buttonBackgroundHover rounded-md p-2 transition-theme mb-4"
+            onClick={() => setOpen(false)}
           >
             <span className="inline-block i-bolt:chat scale-110" />
             Create new project
-          </a>
+          </Link>
           <div className="relative w-full">
             <input
               className="w-full bg-white dark:bg-bolt-elements-background-depth-4 relative px-2 py-1.5 rounded-md focus:outline-none placeholder-bolt-elements-textTertiary text-bolt-elements-textPrimary dark:text-bolt-elements-textPrimary border border-bolt-elements-borderColor"
